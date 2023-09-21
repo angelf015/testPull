@@ -1,4 +1,4 @@
-name: Back
+name: test
 on:
   pull_request:
     branches:
@@ -36,15 +36,17 @@ jobs:
           for path in "${CHANGES[@]}";
           do
             primer_folder=$(echo "$path" | cut -d'/' -f1)
+            echo $primer_folder
             if [ "$primer_folder" == "scripts" ]; then
               segundo_folder=$(echo "$path" | cut -d'/' -f2)
+              echo $segundo_folder
               if [ "$segundo_folder" == "Accion" ]; then
                 file=$(basename $path)
                 if [[ "$file" == "*.sql" ]]; then
                   echo $path
                   cat $path >> general.sql
                   echo "- fiel sql $path" >> general.sql
-                  archivos_M="${archivos_M}Plugins\n"
+                  archivos_M="${archivos_M}$path\n"
                 fi
               fi
               if [ "$segundo_folder" == "Reverso" ]; then
