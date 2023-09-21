@@ -44,12 +44,14 @@ jobs:
                   cat $path >> general.sql
                   echo "- fiel sql $path" >> general.sql
                   archivos_M="${archivos_M}Plugins\n"
+                fi
               fi
               if [ "$segundo_folder" == "Reverso"]; then
                 file=$(basename $path)
                 if [[ "$file" == "*.sql" ]]; then
                   cat $path >> reverso.sql
                   echo "- fiel sql $path" >> reverso.sql
+                fi
               fi
             fi
           done
