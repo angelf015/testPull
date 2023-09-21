@@ -41,6 +41,7 @@ jobs:
               if [ "$segundo_folder" == "Accion" ]; then
                 file=$(basename $path)
                 if [[ "$file" == "*.sql" ]]; then
+                  echo $path
                   cat $path >> general.sql
                   echo "- fiel sql $path" >> general.sql
                   archivos_M="${archivos_M}Plugins\n"
@@ -49,6 +50,7 @@ jobs:
               if [ "$segundo_folder" == "Reverso" ]; then
                 file=$(basename $path)
                 if [[ "$file" == "*.sql" ]]; then
+                  echo $path
                   cat $path >> reverso.sql
                   echo "- fiel sql $path" >> reverso.sql
                 fi
