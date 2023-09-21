@@ -36,16 +36,13 @@ jobs:
           for path in "${CHANGES[@]}";
           do
             primer_folder=$(echo "$path" | cut -d'/' -f1)
-            echo $primer_folder
             if [ "$primer_folder" == "scripts" ]; then
               segundo_folder=$(echo "$path" | cut -d'/' -f2)
-              echo $segundo_folder
               if [ "$segundo_folder" == "Accion" ]; then
                 file=$(basename $path)
                 if [[ "$file" == *.sql ]]; then
                   echo $path
-                  cat $path >> general.sql
-                  echo "- fiel sql $path" >> general.sql
+                  archivos_acciones+=($path)
                   archivos_M="${archivos_M}$path\n"
                 fi
               fi
@@ -53,13 +50,23 @@ jobs:
                 file=$(basename $path)
                 if [[ "$file" == *.sql ]]; then
                   echo $path
-                  cat $path >> reverso.sql
-                  echo "- fiel sql $path" >> reverso.sql
+                  archivos_reverso+=($path)
                 fi
               fi
             fi
           done
+
+          # Convertir array en string
+          AA=$(printf "%s\n" "${archivos_acciones[@]}")
+          AR=$(printf "%s\n" "${archivos_reverso[@]}")
+
+          # Convertir saltos de linea en "\n"
+          AA="${AA//$'\n'/\\n}"
+          AR="${AR//$'\n'/\\n}"
+            
           echo "DIRS=$archivos_M" >> $GITHUB_ENV
+          echo "AA=$AA" >> $GITHUB_ENV
+          echo "AR=$AR" >> $GITHUB_ENV
 
       - name: merge local branches
         if: env.DIRS != ''
@@ -70,6 +77,35 @@ jobs:
           git pull origin $BRANCH_HEAD
           git checkout $BRANCH_BASE
           git merge $BRANCH_HEAD
+
+      - name: llenar general y reverso
+        if: env.DIRS != ''
+        working-directory: REPOSITORIO
+        run: |
+          # convierte el estring "AR" en array
+          ARR_ACCION=()
+          while IFS= read -r line; do
+            ARR_ACCION+=("$line")
+          done < <(echo -e "$AA")
+
+          # convierte el estring "AR" en array
+          ARR_REVERSO=()
+          while IFS= read -r line; do
+            ARR_ACCION+=("$line")
+          done < <(echo -e "$AR")
+
+
+          for path in "${ARR_ACCION[@]}";
+          do
+            cat $path >> general.sql
+            echo "- fiel sql $path" >> general.sql
+          done
+          
+          for path in "${ARR_ACCION[@]}";
+          do
+            cat $path >> reverso.sql
+            echo "- fiel sql $path" >> reverso.sql
+          done
 
       - name: show general
         if: env.DIRS != ''
