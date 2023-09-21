@@ -74,5 +74,3 @@ jobs:
         if: $DIRS != ''
         working-directory: REPOSITORIO
         run: cat reverso.sql
-
-          
