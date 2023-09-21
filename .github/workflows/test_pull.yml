@@ -56,7 +56,7 @@ jobs:
           echo "DIRS=$archivos_M" >> $GITHUB_ENV
 
       - name: merge local branches
-        if: DIRS != ''
+        if: $DIRS != ''
         working-directory: REPOSITORIO
         run: |
           git pull origin $BRANCH_BASE
@@ -66,13 +66,11 @@ jobs:
           git merge $BRANCH_HEAD
 
       - name: show general
-        if: DIRS != ''
+        if: $DIRS != ''
         working-directory: REPOSITORIO
         run: cat general.sql
       
       - name: show reverso
-        if: DIRS != ''
+        if: $DIRS != ''
         working-directory: REPOSITORIO
         run: cat reverso.sql
-
-          
