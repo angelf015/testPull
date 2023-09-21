@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: getBranch
         run: |
-          echo "BRANCH_BASE=${{ github.event.pull_request.base.ref }}"
-          echo "BRANCH_HEAD=${{ github.event.pull_request.head.ref }}"
+          echo "BRANCH_BASE=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+          echo "BRANCH_HEAD=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
 
       - name: Checkout code
         run: |
@@ -28,7 +28,7 @@ jobs:
         working-directory: REPOSITORIO
         run: |
           git fetch origin
-          readarray -t CHANGES < <(git diff --name-only origin/$BRANCh_BASE...origin/$BRANCH_HEAD)
+          readarray -t CHANGES < <(git diff --name-only origin/$BRANCH_BASE...origin/$BRANCH_HEAD)
           archivos_acciones=()
           archivos_reverso=()
           archivos_M=''
