@@ -29,9 +29,9 @@ jobs:
         run: |
           git fetch origin
           readarray -t CHANGES < <(git diff --name-only origin/$BRANCh_BASE...origin/$BRANCH_HEAD)
-          folder_names=()
           archivos_acciones=()
           archivos_reverso=()
+          archivos_M=''
 
           for path in "${CHANGES[@]}";
           do
@@ -43,6 +43,7 @@ jobs:
                 if [[ "$file" == "*.sql" ]]; then
                   cat $path >> general.sql
                   echo "- fiel sql $path" >> general.sql
+                  archivos_M="${archivos_M}Plugins\n"
               fi
               if [ "$segundo_folder" == "Reverso"]; then
                 file=$(basename $path)
@@ -52,16 +53,26 @@ jobs:
               fi
             fi
           done
+          echo "DIRS=$archivos_M" >> $GITHUB_ENV
 
-      # Runs a command CURL test
-      - name: show general
+      - name: merge local branches
+        if: DIRS != ''
         working-directory: REPOSITORIO
         run: |
-          cat general.sql
+          git pull origin $BRANCH_BASE
+          git checkout $BRANCH_HEAD
+          git pull origin $BRANCH_HEAD
+          git checkout $BRANCH_BASE
+          git merge $BRANCH_HEAD
+
+      - name: show general
+        if: DIRS != ''
+        working-directory: REPOSITORIO
+        run: cat general.sql
       
       - name: show reverso
+        if: DIRS != ''
         working-directory: REPOSITORIO
-        run: |
-          cat reverso.sql
+        run: cat reverso.sql
 
           
