@@ -91,7 +91,7 @@ jobs:
           # convierte el estring "AR" en array
           ARR_REVERSO=()
           while IFS= read -r line; do
-            ARR_ACCION+=("$line")
+            ARR_REVERSO+=("$line")
           done < <(echo -e "$AR")
 
 
@@ -101,7 +101,7 @@ jobs:
             echo "- fiel sql $path" >> general.sql
           done
           
-          for path in "${ARR_ACCION[@]}";
+          for path in "${ARR_REVERSO[@]}";
           do
             cat $path >> reverso.sql
             echo "- fiel sql $path" >> reverso.sql
