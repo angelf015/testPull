@@ -1,4 +1,4 @@
-name: Back
+name: test
 on:
   pull_request:
     branches:
@@ -74,4 +74,3 @@ jobs:
         if: $DIRS != ''
         working-directory: REPOSITORIO
         run: cat reverso.sql
-        
