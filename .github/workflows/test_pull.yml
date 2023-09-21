@@ -36,9 +36,9 @@ jobs:
           for path in "${CHANGES[@]}";
           do
             primer_folder=$(echo "$path" | cut -d'/' -f1)
-            if [ "$primer_folder" == "scripts"]; then
+            if [ "$primer_folder" == "scripts" ]; then
               segundo_folder=$(echo "$path" | cut -d'/' -f2)
-              if [ "$segundo_folder" == "Accion"]; then
+              if [ "$segundo_folder" == "Accion" ]; then
                 file=$(basename $path)
                 if [[ "$file" == "*.sql" ]]; then
                   cat $path >> general.sql
@@ -46,7 +46,7 @@ jobs:
                   archivos_M="${archivos_M}Plugins\n"
                 fi
               fi
-              if [ "$segundo_folder" == "Reverso"]; then
+              if [ "$segundo_folder" == "Reverso" ]; then
                 file=$(basename $path)
                 if [[ "$file" == "*.sql" ]]; then
                   cat $path >> reverso.sql
