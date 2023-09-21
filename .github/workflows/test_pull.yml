@@ -36,8 +36,10 @@ jobs:
           for path in "${CHANGES[@]}";
           do
             primer_folder=$(echo "$path" | cut -d'/' -f1)
+            echo $primer_folder
             if [ "$primer_folder" == "scripts" ]; then
               segundo_folder=$(echo "$path" | cut -d'/' -f2)
+              echo $segundo_folder
               if [ "$segundo_folder" == "Accion" ]; then
                 file=$(basename $path)
                 if [[ "$file" == "*.sql" ]]; then
