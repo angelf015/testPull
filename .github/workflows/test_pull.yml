@@ -1,0 +1,67 @@
+name: Back
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: getBranch
+        run: |
+          echo "BRANCH_BASE=${{ github.event.pull_request.base.ref }}"
+          echo "BRANCH_HEAD=${{ github.event.pull_request.head.ref }}"
+
+      - name: Checkout code
+        run: |
+          if [ -d "REPOSITORIO" ]; then
+            rm -rf REPOSITORIO
+          fi
+
+          git clone https://github.com/angelf015/testPull.git -b $BRANCH_BASE REPOSITORIO
+
+      - name: Get modified PCFs
+        working-directory: REPOSITORIO
+        run: |
+          git fetch origin
+          readarray -t CHANGES < <(git diff --name-only origin/$BRANCh_BASE...origin/$BRANCH_HEAD)
+          folder_names=()
+          archivos_acciones=()
+          archivos_reverso=()
+
+          for path in "${CHANGES[@]}";
+          do
+            primer_folder=$(echo "$path" | cut -d'/' -f1)
+            if [ "$primer_folder" == "scripts"]; then
+              segundo_folder=$(echo "$path" | cut -d'/' -f2)
+              if [ "$segundo_folder" == "Accion"]; then
+                file=$(basename $path)
+                if [[ "$file" == "*.sql" ]]; then
+                  cat $path >> general.sql
+                  echo "- fiel sql $path" >> general.sql
+              fi
+              if [ "$segundo_folder" == "Reverso"]; then
+                file=$(basename $path)
+                if [[ "$file" == "*.sql" ]]; then
+                  cat $path >> reverso.sql
+                  echo "- fiel sql $path" >> reverso.sql
+              fi
+            fi
+          done
+
+      # Runs a command CURL test
+      - name: show general
+        working-directory: REPOSITORIO
+        run: |
+          cat general.sql
+      
+      - name: show reverso
+        working-directory: REPOSITORIO
+        run: |
+          cat reverso.sql
+
+          
