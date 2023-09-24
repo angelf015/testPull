@@ -73,6 +73,12 @@ jobs:
           AR="${AR//$'\n'/\\n}"
             
           echo "DIRS=$archivos_M" >> $GITHUB_ENV
+
+          archivo_temporal=$(mktemp)
+                  
+          printf "%s\n" "${archivos_reverso[@]}" > "$archivo_temporal"
+          echo "ARCHIVO_TEMPORAL=$archivo_temporal" >> $GITHUB_ENV
+
           echo "AA=$AA" >> $GITHUB_ENV
           echo "AR=$AR" >> $GITHUB_ENV
 
@@ -124,3 +130,17 @@ jobs:
         if: env.DIRS != ''
         working-directory: REPOSITORIO
         run: cat reverso.sql
+
+      - name: leer temporal
+        if: env.DIRS != ''
+        working-directory: REPOSITORIO
+        run: |
+          archivo_temporal="$ARCHIVO_TEMPORAL"
+          cat "$archivo_temporal"
+
+en github actions tengo las siguientes propiedades:
+permissions:
+  id-token: write
+  contents: read
+
+que significan?
