@@ -137,10 +137,3 @@ jobs:
         run: |
           archivo_temporal="$ARCHIVO_TEMPORAL"
           cat "$archivo_temporal"
-
-en github actions tengo las siguientes propiedades:
-permissions:
-  id-token: write
-  contents: read
-
-que significan?
