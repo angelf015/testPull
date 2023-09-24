@@ -136,4 +136,8 @@ jobs:
         working-directory: REPOSITORIO
         run: |
           archivo_temporal="$ARCHIVO_TEMPORAL"
-          cat "$archivo_temporal"
+          while IFS= read -r linea
+          do
+            echo "Elemento: $linea"
+            # Realiza las operaciones necesarias con cada elemento
+          done < "$archivo_temporal"
