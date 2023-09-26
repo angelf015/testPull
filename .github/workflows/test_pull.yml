@@ -82,7 +82,7 @@ jobs:
           echo "AA=$AA" >> $GITHUB_ENV
           echo "AR=$AR" >> $GITHUB_ENV
 
-      # Una vez que ya se obtuvieron las diferencias entre ramas se hace un merge local
+      # Una vez que ya se obtuvieron las diferencias entre ramas se hace un merge local 
       # en cada step se valida que la variable DIRS no este vacia, si la variable esta vacia quiere decir que no se detectaron cambios de los sql
       - name: merge local branches
         if: env.DIRS != ''
