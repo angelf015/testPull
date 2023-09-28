@@ -1,7 +1,7 @@
 name: Second test
 on:
   workflow_run:
-    workflows: [ "test_pull" ]
+    workflows: [ "test_pull.yml" ]
     types:
       - completed
 
