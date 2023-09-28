@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: test
-        run: echo "Hola mundo"
+        run: echo "Hola mundos"
