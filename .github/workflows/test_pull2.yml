@@ -2,8 +2,8 @@ name: Second test
 on:
   workflow_run:
     workflows: [ "testPullSport" ]
-    types:
-      - completed
+    #types:
+    #  - completed
 
 jobs:
   build:
