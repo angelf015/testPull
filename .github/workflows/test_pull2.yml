@@ -1,13 +1,13 @@
 name: Second test
 on:
-    workflow_run:
-        workflows: ["test"]
-        types:
-            - completed
+  workflow_run:
+    workflows: [ "test" ]
+    types:
+      - completed
 
 jobs:
-    build:
+  build:
     runs-on: ubuntu-22.04
     steps:
-        - name: test
+      - name: test
         run: echo "Hola mundo"
