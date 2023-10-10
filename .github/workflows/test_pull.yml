@@ -141,3 +141,16 @@ jobs:
             echo "Elemento: $linea"
             # Realiza las operaciones necesarias con cada elemento
           done < "$archivo_temporal"
+
+      - name: prueba de texto con emacs
+        if: env.DIRS != ''
+        working-directory: REPOSITORIO
+        run: |
+          echo 'Para las prubas de emacs escribi este texto'
+          ls
+          echo 'De igual forma escribi esto.'
+
+      - name: get id
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN{FS="/"} {print $NF}')
+          echo "El número del pull request es: $PR_NUMBER"

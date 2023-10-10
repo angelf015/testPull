@@ -1,1 +1,3 @@
-create table Productos;
+--- este texto es solo de prueba para emacs
+--- este texto no deberia de causar conflicto con las reglas de sql ya que es solo un comentario
+--- Para esta linea escrbí con errores ortograficos para corregirlos con los atajos de teclado de emacs

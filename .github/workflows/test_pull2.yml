@@ -11,3 +11,6 @@ jobs:
     steps:
       - name: test
         run: echo "Hola mundos"
+
+      - name: test2
+        run: echo 'para las prubas de emacs'
