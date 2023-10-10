@@ -152,5 +152,5 @@ jobs:
 
       - name: get id
         run: |
-          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN{FS="/"} {print $NF}')
+          PR_NUMBER=${{ github.event.pull_request.number }}
           echo "El número del pull request es: $PR_NUMBER"
