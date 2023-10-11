@@ -157,12 +157,16 @@ jobs:
 
       - name: valid
         run: |
-          if [ "CFD.CdfsdffdMdsf.Psdd" != "CFD.CdfsdffdMdsf.Psdd" ] && [ "CFD.CdfsdffdMdsf.Psdd" != "CFD.CdfsdffdMdsf.Psdd.UT" ]; then
-            echo "Son diferentes"
-          else
-            echo "Son iguales"
-          fi
-          
-          if [ ! "CFD.CdfsdffdMdsf.Psdd" == *"CFD.CdfsdffdMdsf.Psdd"* ]; then
-            echo "Son diferentesssss"
-          fi
+          mi_arreglo=("CFD.CdfsdffdMdsf.Psdd" "CFD.CdfsdffdMdsf.Psdd.UT" "cereza" "uva")
+          for elemento in "${mi_arreglo[@]}"; do
+            echo "Elemento: $elemento"
+            if [ "$elemento" != "CFD.CdfsdffdMdsf.Psdd" ] && [ "$elemento" != "CFD.CdfsdffdMdsf.Psdd.UT" ]; then
+              echo "Son diferentes"
+            else
+              echo "Son iguales"
+            fi
+            
+            if [ ! "CFD.CdfsdffdMdsf.Psdd" == *"CFD.CdfsdffdMdsf.Psdd"* ]; then
+              echo "Son diferentesssss"
+            fi
+          done
