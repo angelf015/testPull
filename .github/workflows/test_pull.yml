@@ -158,10 +158,15 @@ jobs:
       - name: valid
         run: |
           echo $AA
-          mi_arreglo=("CFD.CdfsdffdMdsf.Psdd" "CFD.CdfsdffdMdsf.Psdd.UT" "cereza" "uva")
-          for elemento in "${mi_arreglo[@]}"; do
-            echo "Elemento: $elemento"
-            if [ "$elemento" != "CFD.CdfsdffdMdsf.Psdd" ] && [ "$elemento" != "CFD.CdfsdffdMdsf.Psdd.UT" ]; then
+          ARR_ACCION=()
+          while IFS= read -r line; do
+            ARR_ACCION+=("$line")
+          done < <(echo -e "$AA")
+
+          for path in "${ARR_ACCION[@]}";
+          do
+            echo "Elemento: $path"
+            if [ "$path" != "scripts/Accion/Comercio.sql" ] && [ "$path" != "scripts/Accion/Comercio.sql.UT" ]; then
               echo "Son diferentes"
             else
               echo "Son iguales"
