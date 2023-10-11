@@ -166,7 +166,7 @@ jobs:
               echo "Son iguales"
             fi
             
-            if [ ! "CFD.CdfsdffdMdsf.Psdd" == *"CFD.CdfsdffdMdsf.Psdd"* ]; then
+            if [ ! "$elemento" == *"CFD.CdfsdffdMdsf.Psdd"* ]; then
               echo "Son diferentesssss"
             fi
           done
