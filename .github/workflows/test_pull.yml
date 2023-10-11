@@ -165,8 +165,8 @@ jobs:
 
           for path in "${!ARR_ACCION[@]}";
           do
-            echo "Elemento: $path"
-            if [ "$path" != "scripts/Accion/Comercio.sql" ] && [ "$path" != "scripts/Accion/Comercio.sql.UT" ]; then
+            echo "Elemento: ${path[i]}"
+            if [ "${path[i]}" != "scripts/Accion/Comercio.sql" ] && [ "${path[i]}" != "scripts/Accion/Comercio.sql.UT" ]; then
               echo "Son diferentes"
             else
               echo "Son iguales"
