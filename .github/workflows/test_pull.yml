@@ -162,3 +162,7 @@ jobs:
           else
             echo "Son iguales"
           fi
+          
+          if [ ! "CFD.CdfsdffdMdsf.Psdd" == *"CFD.CdfsdffdMdsf.Psdd"* ]; then
+            echo "Son iguales"
+          fi
