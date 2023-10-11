@@ -163,7 +163,7 @@ jobs:
             ARR_ACCION+=("$line")
           done < <(echo -e "$AA")
 
-          for path in "${ARR_ACCION[@]}";
+          for path in "${!ARR_ACCION[@]}";
           do
             echo "Elemento: $path"
             if [ "$path" != "scripts/Accion/Comercio.sql" ] && [ "$path" != "scripts/Accion/Comercio.sql.UT" ]; then
