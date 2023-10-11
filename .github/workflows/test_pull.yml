@@ -164,5 +164,5 @@ jobs:
           fi
           
           if [ ! "CFD.CdfsdffdMdsf.Psdd" == *"CFD.CdfsdffdMdsf.Psdd"* ]; then
-            echo "Son iguales"
+            echo "Son diferentesssss"
           fi
