@@ -157,6 +157,7 @@ jobs:
 
       - name: valid
         run: |
+          echo $AA
           mi_arreglo=("CFD.CdfsdffdMdsf.Psdd" "CFD.CdfsdffdMdsf.Psdd.UT" "cereza" "uva")
           for elemento in "${mi_arreglo[@]}"; do
             echo "Elemento: $elemento"
@@ -164,9 +165,5 @@ jobs:
               echo "Son diferentes"
             else
               echo "Son iguales"
-            fi
-            
-            if [ ! "$elemento" == *"CFD.CdfsdffdMdsf.Psdd"* ]; then
-              echo "Son diferentesssss"
             fi
           done
