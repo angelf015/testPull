@@ -154,3 +154,11 @@ jobs:
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
           echo "El número del pull request es: $PR_NUMBER"
+
+      - name: valid
+        run: |
+          if [ "CFD.CdfsdffdMdsf.Psdd" != "CFD.CdfsdffdMdsf.Psdd" ] && [ "CFD.CdfsdffdMdsf.Psdd" != "CFD.CdfsdffdMdsf.Psdd.UT" ]; then
+            echo "Son diferentes"
+          else
+            echo "Son iguales"
+          fi
