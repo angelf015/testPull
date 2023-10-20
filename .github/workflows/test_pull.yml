@@ -178,3 +178,4 @@ jobs:
         run: |
           cat scripts/code/test1.sql >> generalsql.sql
           cat scripts/code/test2.sql >> generalsql.sql
+          cat generalsql.sql
