@@ -176,6 +176,9 @@ jobs:
       - name: load
         working-directory: REPOSITORIO
         run: |
-          cat scripts/code/test3.sql >> generalsql.sql
-          cat scripts/code/test4.sql >> generalsql.sql
+          mkdir temporal.txt
+          ls
+          cat test3.utf8.sql >> generalsql.sql
+          # cat scripts/code/test3.sql >> generalsql.sql
+          # cat scripts/code/test4.sql >> generalsql.sql
           cat generalsql.sql
