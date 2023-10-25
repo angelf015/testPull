@@ -41,4 +41,4 @@ done
 cat $temp_file >> "generalsql.sql"
 
 # Limpia el archivo temporal cuando hayas terminado.
-# rm "$temp_file"
+# rm "$temp_file"#echo "El archivo $i s
