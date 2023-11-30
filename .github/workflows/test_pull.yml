@@ -1,4 +1,4 @@
-name: test
+name: testPullSport
 on:
   pull_request:
     branches:
@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: getBranch
         run: |
+          # Guarda la rama base y head en las variables de github
           echo "BRANCH_BASE=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
           echo "BRANCH_HEAD=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
 
@@ -28,6 +29,7 @@ jobs:
         working-directory: REPOSITORIO
         run: |
           git fetch origin
+          # Guarda las diferencias de las ramas en un arreglo
           readarray -t CHANGES < <(git diff --name-only origin/$BRANCH_BASE...origin/$BRANCH_HEAD)
           archivos_acciones=()
           archivos_reverso=()
@@ -35,32 +37,53 @@ jobs:
 
           for path in "${CHANGES[@]}";
           do
+            # Se obtiene el nombre de la primera carpeta de la ruta
             primer_folder=$(echo "$path" | cut -d'/' -f1)
-            echo $primer_folder
+            # se valida que los cambios vengan de la carpeta "scripts" que es donde estan los archivos sql
             if [ "$primer_folder" == "scripts" ]; then
+              # Se obtiene el nombre del segundo folder que es donde se encuentran las carpetas de accion y reverso
               segundo_folder=$(echo "$path" | cut -d'/' -f2)
-              echo $segundo_folder
+              # si el cambio viene de la carpeta accion se guarda en el arreglo para accion
               if [ "$segundo_folder" == "Accion" ]; then
                 file=$(basename $path)
-                if [[ "$file" == "*.sql" ]]; then
+                if [[ "$file" == *.sql ]]; then
                   echo $path
-                  cat $path >> general.sql
-                  echo "- fiel sql $path" >> general.sql
+                  archivos_acciones+=($path)
+                  # se le asigna un valor a la variable "archivos_M" para que despues se valide si hay cambios de archivos sql
                   archivos_M="${archivos_M}$path\n"
                 fi
               fi
+              # Si el cambio viene de la carpeta de Reverso, se guarda en el arreglo de reverso
               if [ "$segundo_folder" == "Reverso" ]; then
                 file=$(basename $path)
-                if [[ "$file" == "*.sql" ]]; then
+                if [[ "$file" == *.sql ]]; then
                   echo $path
-                  cat $path >> reverso.sql
-                  echo "- fiel sql $path" >> reverso.sql
+                  archivos_reverso+=($path)
                 fi
               fi
             fi
           done
+
+          # Convertir array en string
+          AA=$(printf "%s\n" "${archivos_acciones[@]}")
+          AR=$(printf "%s\n" "${archivos_reverso[@]}")
+
+          # Convertir saltos de linea en "\n"
+          AA="${AA//$'\n'/\\n}"
+          AR="${AR//$'\n'/\\n}"
+            
           echo "DIRS=$archivos_M" >> $GITHUB_ENV
 
+          archivo_temporal=$(mktemp)
+                  
+          printf "%s\n" "${archivos_reverso[@]}" > "$archivo_temporal"
+          echo "ARCHIVO_TEMPORAL=$archivo_temporal" >> $GITHUB_ENV
+
+          echo "AA=$AA" >> $GITHUB_ENV
+          echo "AR=$AR" >> $GITHUB_ENV
+
+      # Una vez que ya se obtuvieron las diferencias entre ramas se hace un merge local 
+      # en cada step se valida que la variable DIRS no este vacia, si la variable esta vacia quiere decir que no se detectaron cambios de los sql
       - name: merge local branches
         if: env.DIRS != ''
         working-directory: REPOSITORIO
@@ -71,6 +94,33 @@ jobs:
           git checkout $BRANCH_BASE
           git merge $BRANCH_HEAD
 
+      - name: llenar general y reverso
+        if: env.DIRS != ''
+        working-directory: REPOSITORIO
+        run: |
+          # convierte el estring "AR" en array
+          ARR_ACCION=()
+          while IFS= read -r line; do
+            ARR_ACCION+=("$line")
+          done < <(echo -e "$AA")
+
+          # convierte el estring "AR" en array
+          ARR_REVERSO=()
+          while IFS= read -r line; do
+            ARR_REVERSO+=("$line")
+          done < <(echo -e "$AR")
+
+
+          for path in "${ARR_ACCION[@]}";
+          do
+            cat $path >> general.sql
+          done
+          
+          for path in "${ARR_REVERSO[@]}";
+          do
+            cat $path >> reverso.sql
+          done
+
       - name: show general
         if: env.DIRS != ''
         working-directory: REPOSITORIO
@@ -80,3 +130,53 @@ jobs:
         if: env.DIRS != ''
         working-directory: REPOSITORIO
         run: cat reverso.sql
+
+      - name: leer temporal
+        if: env.DIRS != ''
+        working-directory: REPOSITORIO
+        run: |
+          archivo_temporal="$ARCHIVO_TEMPORAL"
+          while IFS= read -r linea
+          do
+            echo "Elemento: $linea"
+            # Realiza las operaciones necesarias con cada elemento
+          done < "$archivo_temporal"
+
+      - name: prueba de texto con emacs
+        if: env.DIRS != ''
+        working-directory: REPOSITORIO
+        run: |
+          echo 'Para las prubas de emacs escribi este texto'
+          ls
+          echo 'De igual forma escribi esto.'
+
+      - name: get id
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          echo "El número del pull request es: $PR_NUMBER"
+
+      - name: valid
+        run: |
+          echo $AA
+          ARR_ACCION=()
+          while IFS= read -r line; do
+            ARR_ACCION+=("$line")
+          done < <(echo -e "$AA")
+
+          for path in "${!ARR_ACCION[@]}";
+          do
+            echo "Elemento: ${ARR_ACCION[path]}"
+            if [ "${ARR_ACCION[path]}" != "scripts/Accion/Comercio.sql" ] && [ "${ARR_ACCION[path]}" != "scripts/Accion/Comercio.sql.UT" ]; then
+              echo "Son diferentes"
+            else
+              echo "Son iguales"
+            fi
+          done
+
+      - name: load
+        working-directory: REPOSITORIO
+        run: |
+          # cat test3.utf8.sql >> generalsql.sql
+          # cat scripts/code/test3.sql >> generalsql.sql
+          # cat scripts/code/test4.sql >> generalsql.sql
+          cat generalsql.sql
